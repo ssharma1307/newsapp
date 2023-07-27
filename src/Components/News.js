@@ -25,6 +25,16 @@ export class News extends Component {
             
         }
     }
+    async updateNews(){ 
+      let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=44e1eb38db1d40d7a05bf768a5cb889d&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+          page:this.state.page,
+          articles: parsedData.articles,
+          loading:false
+      })
+    }
     async componentDidMount(){
         let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=44e1eb38db1d40d7a05bf768a5cb889d&page=1&pageSize=${this.props.pageSize}`;
         this.setState({loading:true});
@@ -35,32 +45,12 @@ export class News extends Component {
     }
 
     handlePrevClick=async ()=>{
-      
-        let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=44e1eb38db1d40d7a05bf768a5cb889d&page=${this.state.page-1}&pageSize=${this.props.pageSize}`;
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        this.setState({
-            page:this.state.page-1,
-            articles: parsedData.articles,
-            loading:false
-        })
+        this.setState({page:this.state.page - 1});
+        this.updateNews();
     }
     handleNextClick = async ()=>{
-        
-        if ((this.state.page + 1 > Math.ceil(this.state.totalResults/this.props.pageSize))){ console.log("Next");}
-        else{
-            console.log("next");
-             let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=44e1eb38db1d40d7a05bf768a5cb889d&page=${this.state.page + 1}&pagesize=${this.props.pageSize}`;
-            this.setState({loading:true});
-            let data = await fetch(url);
-            let parsedData = await data.json()
-            console.log(parsedData);  
-            this.setState({
-                page: this.state.page + 1,
-                articles: parsedData.articles,
-                loading:false
-            })
-    }
+    this.setState({page:this.state.page + 1});
+    this.updateNews();
     }
 
   render() {
