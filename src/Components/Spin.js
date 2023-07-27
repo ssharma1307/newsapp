@@ -1,18 +1,15 @@
-import React, { Component } from 'react'
+import React  from 'react'
 import loading from './loading.gif'
 
-export class Spin extends Component {
-  static propTypes = {
+const Spin=()=>{
 
-  }
-
-  render() {
+ 
     return (
       <div className='text-center my-3'>
         <img src={loading} alt="loading" />
       </div>
     )
-  }
+  
 }
 
 export default Spin
